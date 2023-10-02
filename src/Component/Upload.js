@@ -14,11 +14,11 @@ const Upload = () => {
     fd.append("name", file.name);
 
     axios
-      .post("/course/upload", fd, {
+      .post("/videos", fd, {
         headers: {
           "Content-Type": `multipart/form-data; `,
         },
-        baseURL: "https://1a0b4116-1f0a-4b40-96c1-ead87954a961.mock.pstmn.io",
+        baseURL: "http://10.110.1.108:8080/",
       })
       .then((Response) => {
         console.log("request body : " + fd.get("file").type);
