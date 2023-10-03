@@ -1,61 +1,28 @@
 import React, { useCallback, useState } from "react";
-import "./MyComponent.css";
+import "./Test.css";
 
 const SubPageSytel = () => {
-  const [selectedVideo, setSelectedVideo] = useState(null);
+  const downloadVideo = () => {
+    // 가상의 데이터 또는 API에서 받은 Blob 객체 생성 (예: 영상 데이터)
+    const videoData = new Blob(["영상 데이터"], { type: "video/mp4" });
 
-  const handleVideoChange = (event) => {
-    setSelectedVideo(event.target.files[0]);
+    // Blob 객체를 URL.createObjectURL을 사용하여 다운로드 가능한 URL로 변환
+    const videoUrl = URL.createObjectURL(videoData);
+
+    // 가상의 링크 엘리먼트를 생성하여 다운로드 링크 설정
+    const a = document.createElement("a");
+    a.href = videoUrl;
+    a.download = "video.mp4"; // 다운로드될 파일명 설정
+
+    // 링크를 클릭하여 다운로드 시작
+    a.click();
+
+    // 다운로드가 완료되면 URL.createObjectURL로 생성된 URL 해제
+    URL.revokeObjectURL(videoUrl);
   };
-
   return (
-    // <div id="root">
-    //   <h2 class="title">File Upload</h2>
-    //   <hr />
-    //   <div class="contents">
-    //     <div class="upload-box">
-    //       <div id="drop-file" class="drag-file">
-    //         <img
-    //           src="https://img.icons8.com/pastel-glyph/2x/image-file.png"
-    //           alt="파일 아이콘"
-    //           class="image"
-    //         />
-    //         <p class="message">Drag files to upload</p>
-    //       </div>
-    //       <label class="file-label" htmlFor="chooseFile">
-    //         Choose File
-    //       </label>
-    //       <input
-    //         class="file"
-    //         id="chooseFile"
-    //         type="file"
-    //         multiple
-    //         onChange={previewFile}
-    //       />
-    //     </div>
-    //   </div>
-    //   <div id="files"></div>
-    // </div>
     <div>
-      <div>
-        <label class="file-label" htmlFor="chooseFile">
-          Choose File
-        </label>
-        <input
-          class="file"
-          accept="video/*"
-          id="chooseFile"
-          type="file"
-          multiple
-          onChange={handleVideoChange}
-        />
-        {selectedVideo && (
-          <video width="320" height="240" controls>
-            <source src={URL.createObjectURL(selectedVideo)} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        )}
-      </div>
+      <button onClick={downloadVideo}>영상 다운로드</button>
     </div>
   );
 };

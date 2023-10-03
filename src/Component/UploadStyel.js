@@ -34,18 +34,16 @@ const Uploadsytle = () => {
         baseURL: "http://10.110.1.108:8080/",
       })
       .then((Response) => {
-        Response.blob();
-      })
-      .then((blob) => {
-        let fileName = "VideoImp";
+        console.log("Response Data : " + Response.data);
+        let fileName = "VideoImp.mp4";
         const element = document.createElement("a");
-        element.href = URL.createObjectURL(blob);
+        element.href = URL.createObjectURL(new Blob([Response.data]));
         element.download = fileName;
         document.body.appendChild(element); // FireFox
         element.click();
       })
       .catch((error) => {
-        console.log("오류발생");
+        console.log("오류발생" + error);
       });
   }
 
@@ -120,6 +118,7 @@ const Uploadsytle = () => {
                 alignItems: "flex-start",
                 display: "inline-flex",
                 backgroundColor: isClicked ? "#2F3033" : "#3D3E42",
+                cursor: "pointer",
               }}
               onClick={handleDivClick}
             ></div>
@@ -140,7 +139,7 @@ const Uploadsytle = () => {
               {/* li 요소 */}
               <div style={liStyle}>Dishbaord</div>
               <div style={liStyle}>파일관리</div>
-              <div style={liStyle}>잔행강좌공지</div>
+              <div style={liStyle}>진행강좌 공지</div>
               <div
                 style={{
                   width: "100%",
@@ -156,6 +155,7 @@ const Uploadsytle = () => {
                   color: "#999999",
                   fontSize: 12,
                   background: isLiClicked ? "#3D3E42" : "#044595",
+                  cursor: "pointer",
                 }}
                 onClick={handleLiClick}
               >
@@ -314,73 +314,120 @@ const Uploadsytle = () => {
             paddingTop: 32,
             paddingBottom: 462,
             paddingLeft: 40,
-            paddingRight: 40,
+            paddingRight: 80,
             left: 190,
             top: 68,
             position: "absolute",
             background: "#F7F9FA",
             flexDirection: "column",
-            justifyContent: "flex-start",
-            display: "inline-flex",
           }}
         >
-          <div
-            style={{
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              gap: 20,
-              display: "flex",
-            }}
-          >
-            {/* 파일전송 */}
-            <div
-              class="upload-box"
-              style={{ visibility: isLiClicked ? "hidden" : "visible" }}
-            >
-              <div id="drop-file" class="drag-file">
-                <img
-                  src="https://img.icons8.com/pastel-glyph/2x/image-file.png"
-                  alt="파일 아이콘"
-                  class="image"
-                />
-                <p class="message">첨부파일을 마우스로 끌어 놓으세요.</p>
-              </div>
-              {selectedVideo && (
-                <video width="320" height="240" controls>
-                  <source
-                    src={URL.createObjectURL(selectedVideo)}
-                    type="video/mp4"
-                  />
-                  Your browser does not support the video tag.
-                </video>
-              )}
-              {/* 전송 */}
-              <div>
-                <label class="file-label" htmlFor="chooseFile">
-                  Choose File
-                </label>
-                <input
-                  class="file"
-                  accept="video/*"
-                  id="chooseFile"
-                  type="file"
-                  multiple="multiple"
-                  onChange={handleChangeFile}
-                />
-              </div>
-              <label class="file-label" htmlFor="sendFile">
-                send
-              </label>
-              <button id="sendFile" onClick={() => Send()} />
-            </div>
+          {/* 파일전송 */}
+          <div style={{ visibility: isLiClicked ? "hidden" : "visible" }}>
             <div
               style={{
-                paddingLeft: 560.5,
-                paddingRight: 555.5,
                 display: "flex",
+                alignItems: "center",
+                paddingBottom: 10,
+                fontWeight: "bold",
+                fontSize: 1,
               }}
-            ></div>
+            >
+              <img
+                src="img/free-icon-home-1828864.png"
+                alt="파일 아이콘"
+                class="image"
+                style={{ width: 12, height: 12, color: "#999999" }}
+              />{" "}
+              <div>&nbsp; > </div>
+              <div>&nbsp;진행강좌 업데이트</div>
+            </div>
+            <hr style={{ backgroundColor: "#999999" }} />
+            <table
+              style={{ borderSpacing: "10px", borderCollapse: "separate" }}
+            >
+              <tr>
+                <td>
+                  <div class="upload-box">
+                    <div id="drop-file" class="drag-file">
+                      <img
+                        src="https://img.icons8.com/pastel-glyph/2x/image-file.png"
+                        alt="파일 아이콘"
+                        class="image"
+                      />
+                      <p class="message">첨부파일을 마우스로 끌어 놓으세요.</p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  {selectedVideo && (
+                    <div>
+                      <video width="500" height="400" controls>
+                        <source
+                          src={URL.createObjectURL(selectedVideo)}
+                          type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div
+                    style={{
+                      justifyContent: "center",
+                      display: "flex",
+                      alignContent: "center",
+                    }}
+                  >
+                    <label class="file-label" htmlFor="chooseFile">
+                      Choose File
+                    </label>
+                    <input
+                      class="file"
+                      accept="video/*"
+                      id="chooseFile"
+                      type="file"
+                      multiple="multiple"
+                      onChange={handleChangeFile}
+                    />
+                  </div>
+                </td>
+                <td>
+                  {selectedVideo && (
+                    <div
+                      style={{
+                        justifyContent: "center",
+                        display: "flex",
+                        alignContent: "center",
+                      }}
+                    >
+                      <label class="file-label" htmlFor="sendFile">
+                        Send
+                      </label>
+                      <input
+                        class="file"
+                        accept="video/*"
+                        id="sendFile"
+                        onClick={() => Send()}
+                      />
+                    </div>
+                  )}
+                </td>
+              </tr>
+            </table>
+
+            {/* 전송 */}
           </div>
+          <div
+            style={{
+              paddingLeft: 560.5,
+              paddingRight: 555.5,
+              display: "flex",
+            }}
+          ></div>
         </div>
         <div
           style={{
@@ -469,36 +516,9 @@ const Uploadsytle = () => {
           >
             <img style={{ width: 280, height: 68 }} src="img/kangnam.png" />
           </div>
-          <div
-            style={{
-              width: 60,
-              paddingTop: 7,
-              paddingBottom: 7,
-              paddingLeft: 13.1,
-              paddingRight: 12.9,
-              left: 1360,
-              top: 18,
-              position: "absolute",
-              background: "#37ABF1",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              display: "inline-flex",
-            }}
-          >
-            <div
-              style={{
-                textAlign: "center",
-                color: "white",
-                fontSize: 12,
-                fontFamily: "NanumGothic",
-                fontWeight: "400",
-                lineHeight: 2.14,
-                wordWrap: "break-word",
-              }}
-            >
-              로그아웃
-            </div>
+
+          <div style={{ top: 12, right: 30, position: "absolute" }}>
+            <img style={{ width: 430, height: 45 }} src="img/uptitle.png" />
           </div>
         </div>
       </div>

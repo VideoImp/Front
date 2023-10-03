@@ -1,0 +1,9 @@
+.container {
+  display: table;
+  height: 200px; /* 원하는 높이 설정 */
+}
+
+.container div {
+  display: table-cell;
+  vertical-align: middle;
+}
